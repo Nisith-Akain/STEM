@@ -3,101 +3,166 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Neutralization Reactions</title>
+<title>Neutralization Reactions · STEM</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23d97757'/%3E%3Cpath fill='%23faf9f5' d='M6 3h4v1H9v3l3 5v1H4v-1l3-5V4H6z'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <style>
-  :root { --bg:#fff; --fg:#1f2328; --muted:#59636e; --line:#d1d9e0; --code:#f6f8fa; --accent:#0969da; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9198a1; --line:#3d444d; --code:#151b23; --accent:#4493f8; }
+  :root {
+    --bg:#faf9f5; --surface:#f0eee6; --card:#fff; --fg:#141413; --muted:#6b6a64; --line:#e5e2d9;
+    --accent:#d97757; --accent-soft:#f6e3da; --code:#efece3;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans: ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --side: 272px; --head: 56px;
   }
-  body { background:var(--bg); color:var(--fg); margin:0; font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
-  main { max-width:820px; margin:0 auto; padding:32px 16px 64px; }
-  h1 { border-bottom:1px solid var(--line); padding-bottom:.3em; }
-  h2 { border-bottom:1px solid var(--line); padding-bottom:.3em; margin-top:1.8em; }
-  a { color:var(--accent); }
-  code, pre { background:var(--code); border-radius:6px; }
-  code { padding:.15em .35em; }
-  pre { padding:12px 16px; overflow-x:auto; }
-  pre code { padding:0; }
-  .table-wrap { overflow-x:auto; }
-  table { border-collapse:collapse; margin:1em 0; width:100%; }
-  th, td { border:1px solid var(--line); padding:6px 12px; text-align:left; }
-  th { background:var(--code); }
-  .katex-display { overflow-x:auto; overflow-y:hidden; }
-  h1 { margin-top:0; }
-  .tabs { display:flex; gap:4px; overflow-x:auto; border-bottom:1px solid var(--line); margin-bottom:24px; position:sticky; top:0; background:var(--bg); padding-top:8px; z-index:1; scrollbar-width:thin; }
-  .tab { flex:none; background:none; border:0; border-bottom:3px solid transparent; color:var(--muted); font:inherit; font-size:.92em; padding:8px 12px; cursor:pointer; white-space:nowrap; }
-  .tab:hover { color:var(--fg); }
-  .tab[aria-selected="true"] { color:var(--fg); border-bottom-color:var(--accent); font-weight:600; }
-  .tab:focus-visible { outline:2px solid var(--accent); outline-offset:-2px; }
-  .pager { display:flex; justify-content:space-between; gap:12px; margin-top:2.5em; }
-  .pager button { background:var(--code); color:var(--fg); border:1px solid var(--line); border-radius:6px; padding:8px 14px; font:inherit; cursor:pointer; }
-  .pager button:hover { border-color:var(--accent); }
-  footer { margin-top:3em; color:var(--muted); font-size:.9em; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#262624; --surface:#30302e; --card:#2b2b29; --fg:#faf9f5; --muted:#a6a39a; --line:#3d3d3a;
+            --accent:#e08a6d; --accent-soft:#3e2e28; --code:#33322f; }
+  }
+  * { box-sizing:border-box; }
+  html { scroll-padding-top:calc(var(--head) + 16px); }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.7 var(--sans); -webkit-font-smoothing:antialiased; }
+  a { color:var(--accent); text-underline-offset:3px; }
+
+  /* top bar */
+  header { position:sticky; top:0; z-index:20; height:var(--head); display:flex; align-items:center; gap:12px;
+           padding:0 20px; background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:blur(8px);
+           border-bottom:1px solid var(--line); }
+  .brand { display:flex; align-items:center; gap:10px; font-family:var(--serif); font-size:20px; font-weight:600; color:var(--fg); text-decoration:none; }
+  .logo { width:26px; height:26px; border-radius:7px; background:var(--accent); display:grid; place-items:center; }
+  .logo svg { width:16px; height:16px; fill:var(--bg); }
+  .crumb { color:var(--muted); font-size:14px; }
+  .spacer { flex:1; }
+  .gh { color:var(--muted); font-size:14px; text-decoration:none; padding:6px 10px; border-radius:8px; }
+  .gh:hover { background:var(--surface); color:var(--fg); }
+  #menu { display:none; background:none; border:0; color:var(--fg); padding:6px; border-radius:8px; cursor:pointer; }
+  #menu:hover { background:var(--surface); }
+
+  /* layout */
+  .shell { display:grid; grid-template-columns:var(--side) minmax(0,1fr); max-width:1160px; margin:0 auto; }
+  aside { position:sticky; top:var(--head); height:calc(100vh - var(--head)); overflow-y:auto; padding:28px 16px 40px 20px; border-right:1px solid var(--line); }
+  .group { margin-bottom:22px; }
+  .group h4 { margin:0 0 6px 10px; font:600 12px/1 var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+  .nav a { display:block; padding:7px 10px; border-radius:8px; color:var(--muted); text-decoration:none; font-size:14.5px; line-height:1.35; }
+  .nav a:hover { background:var(--surface); color:var(--fg); }
+  .nav a[aria-current="page"] { background:var(--accent-soft); color:var(--fg); font-weight:600; }
+  main { padding:44px clamp(20px,5vw,64px) 72px; min-width:0; }
+  article { max-width:720px; }
+  .eyebrow { color:var(--accent); font-size:13px; font-weight:600; letter-spacing:.04em; margin-bottom:10px; }
+
+  /* prose */
+  article h1 { font:600 40px/1.15 var(--serif); letter-spacing:-.01em; margin:0 0 .6em; }
+  article h2 { font:600 26px/1.25 var(--serif); margin:2em 0 .6em; }
+  article h3 { font:600 19px/1.3 var(--serif); margin:1.6em 0 .4em; }
+  article p, article li { color:color-mix(in srgb, var(--fg) 88%, var(--bg)); }
+  article ul, article ol { padding-left:1.4em; }
+  article li { margin:.35em 0; }
+  article li::marker { color:var(--accent); }
+  article code { background:var(--code); padding:.15em .4em; border-radius:6px; font-size:.88em; }
+  article pre { background:var(--code); padding:14px 16px; border-radius:12px; overflow-x:auto; }
+  article pre code { padding:0; background:none; }
+  .callout { background:var(--accent-soft); border:1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+             border-radius:12px; padding:14px 18px; margin:1.2em 0; font-size:17px; }
+  .callout strong { color:var(--fg); }
+  .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:12px; margin:1.4em 0; background:var(--card); }
+  table { border-collapse:collapse; width:100%; font-size:14.5px; }
+  th, td { padding:10px 14px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top; }
+  tr:last-child td { border-bottom:0; }
+  th { background:var(--surface); font-weight:600; white-space:nowrap; }
+  .katex-display { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 8px; margin:1.4em 0; overflow-x:auto; overflow-y:hidden; }
+
+  /* prev / next */
+  .pager { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:56px; }
+  .pager a { display:block; padding:14px 18px; border:1px solid var(--line); border-radius:12px; background:var(--card); text-decoration:none; color:var(--fg); }
+  .pager a:hover { border-color:var(--accent); }
+  .pager small { display:block; color:var(--muted); font-size:12.5px; }
+  .pager .next { text-align:right; grid-column:2; }
+  .pager .prev { grid-column:1; }
+
+  /* mobile */
+  #scrim { display:none; }
+  @media (max-width: 860px) {
+    #menu { display:block; }
+    .crumb { display:none; }
+    .shell { display:block; }
+    aside { position:fixed; z-index:30; top:var(--head); left:0; bottom:0; width:min(300px, 85vw); height:auto; background:var(--bg);
+            transform:translateX(-100%); transition:transform .2s; }
+    body.open aside { transform:none; box-shadow:0 10px 40px rgba(0,0,0,.25); }
+    body.open #scrim { display:block; position:fixed; inset:var(--head) 0 0 0; z-index:25; background:rgba(0,0,0,.35); }
+    article h1 { font-size:32px; }
+    main { padding-top:28px; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <nav class="tabs" id="tabs" role="tablist" aria-label="Sections"></nav>
-  <article id="content">Loading…</article>
-  <footer><a href="https://github.com/Nisith-Akain/STEM">STEM on GitHub</a></footer>
-</main>
+<header>
+  <button id="menu" aria-label="Toggle navigation"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <a class="brand" href="#overview"><span class="logo"><svg viewBox="0 0 16 16"><path d="M6 2h4v1H9v4l3.5 6v1h-9v-1L7 7V3H6z"/></svg></span>STEM</a>
+  <span class="crumb">/ Chemistry</span>
+  <span class="spacer"></span>
+  <a class="gh" href="https://github.com/Nisith-Akain/STEM">GitHub ↗</a>
+</header>
+<div class="shell">
+  <aside><nav class="nav" id="nav" aria-label="Sections"></nav></aside>
+  <main><article id="content">Loading…</article></main>
+</div>
+<div id="scrim"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
 <script>
 (async () => {
-  const el = document.getElementById('content'), nav = document.getElementById('tabs');
+  const el = document.getElementById('content'), nav = document.getElementById('nav');
   const slug = t => t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const NOTE = 'Neutralization reactions';
   try {
     const res = await fetch('chemistry/neutralization-reactions.md');
     if (!res.ok) throw new Error(res.status);
-    const text = await res.text();
-    // Split into one tab per "## " section; text before the first one is the Overview
-    const parts = text.split(/^(?=## )/m);
-    const tabs = parts.map((md, i) => {
+    const parts = (await res.text()).split(/^(?=## )/m);
+    const pages = parts.map((md, i) => {
       const title = i === 0 ? 'Overview' : md.match(/^## (.*)/)[1].replace(/^\d+\.\s*/, '');
-      return { title, id: i === 0 ? 'overview' : slug(title), md };
+      return { title, id: i === 0 ? 'overview' : slug(title), md, group: i === 0 ? null : /^(Acid|Bonus)/.test(title) ? 'Reactions' : 'Reference' };
     });
-    let current = -1;
-    const show = (i, push = true) => {
-      i = Math.max(0, Math.min(tabs.length - 1, i));
-      current = i;
-      el.innerHTML = marked.parse(tabs[i].md);
-      el.querySelectorAll('pre > code.language-latex').forEach(code => {
-        const div = document.createElement('div');
-        katex.render(code.textContent.trim(), div, { displayMode: true, throwOnError: false });
-        code.parentElement.replaceWith(div);
+
+    // sidebar
+    const groups = [[null, pages.filter(p => !p.group)], ['Reactions', pages.filter(p => p.group === 'Reactions')], ['Reference', pages.filter(p => p.group === 'Reference')]];
+    groups.forEach(([name, items], gi) => {
+      const g = document.createElement('div'); g.className = 'group';
+      g.innerHTML = `<h4>${name || NOTE}</h4>`;
+      items.forEach(p => { const a = document.createElement('a'); a.href = '#' + p.id; a.textContent = p.title; p.a = a; g.appendChild(a); });
+      if (items.length) nav.appendChild(g);
+    });
+
+    const show = () => {
+      let i = pages.findIndex(p => p.id === location.hash.slice(1)); if (i < 0) i = 0;
+      const p = pages[i];
+      el.innerHTML = marked.parse(p.md);
+      if (i > 0) { const h = el.querySelector('h2'); if (h) { const h1 = document.createElement('h1'); h1.innerHTML = h.innerHTML; h.replaceWith(h1); } }
+      const eb = document.createElement('div'); eb.className = 'eyebrow'; eb.textContent = p.group || NOTE; el.prepend(eb);
+      // formula lines (a paragraph that is only bold text) become callouts
+      el.querySelectorAll('p').forEach(q => { if (q.children.length === 1 && q.firstElementChild.tagName === 'STRONG' && q.textContent.trim() === q.firstElementChild.textContent.trim() && !q.textContent.trim().endsWith(':')) q.classList.add('callout'); });
+      el.querySelectorAll('pre > code.language-latex').forEach(c => {
+        const d = document.createElement('div');
+        katex.render(c.textContent.trim(), d, { displayMode: true, throwOnError: false });
+        c.parentElement.replaceWith(d);
       });
-      el.querySelectorAll('table').forEach(t => {
-        const w = document.createElement('div'); w.className = 'table-wrap';
-        t.replaceWith(w); w.appendChild(t);
-      });
+      el.querySelectorAll('table').forEach(t => { const w = document.createElement('div'); w.className = 'table-wrap'; t.replaceWith(w); w.appendChild(t); });
+      el.querySelectorAll('a[href^="http"]').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
       const pager = document.createElement('div'); pager.className = 'pager';
-      const mk = (label, j) => { const b = document.createElement('button'); b.textContent = label; b.onclick = () => go(j); return b; };
-      pager.append(i > 0 ? mk('← ' + tabs[i-1].title, i-1) : document.createElement('span'),
-                   i < tabs.length-1 ? mk(tabs[i+1].title + ' →', i+1) : document.createElement('span'));
+      const link = (cls, label, q) => `<a class="${cls}" href="#${q.id}"><small>${label}</small>${q.title}</a>`;
+      pager.innerHTML = (i > 0 ? link('prev', '← Previous', pages[i-1]) : '') + (i < pages.length - 1 ? link('next', 'Next →', pages[i+1]) : '');
       el.appendChild(pager);
-      [...nav.children].forEach((b, k) => { b.setAttribute('aria-selected', k === i); b.tabIndex = k === i ? 0 : -1; });
-      nav.children[i].scrollIntoView({ block: 'nearest', inline: 'nearest' });
-      document.title = tabs[i].title + ' · Neutralization Reactions';
+      pages.forEach(q => q.a && (q.a.getAttribute('href') === '#' + p.id ? q.a.setAttribute('aria-current', 'page') : q.a.removeAttribute('aria-current')));
+      document.title = p.title + ' · ' + NOTE + ' · STEM';
+      document.body.classList.remove('open');
       window.scrollTo(0, 0);
     };
-    const go = i => { history.replaceState(null, '', '#' + tabs[i].id); show(i); };
-    tabs.forEach((t, i) => {
-      const b = document.createElement('button');
-      b.className = 'tab'; b.role = 'tab'; b.textContent = t.title; b.onclick = () => go(i);
-      b.onkeydown = e => {
-        if (e.key === 'ArrowRight') { go(i + 1); nav.children[current].focus(); }
-        if (e.key === 'ArrowLeft') { go(i - 1); nav.children[current].focus(); }
-      };
-      nav.appendChild(b);
-    });
-    const fromHash = () => { const k = tabs.findIndex(t => t.id === location.hash.slice(1)); show(k < 0 ? 0 : k); };
-    window.addEventListener('hashchange', fromHash);
-    fromHash();
+    addEventListener('hashchange', show);
+    show();
   } catch (e) {
     el.textContent = 'Could not load the page (' + e.message + ').';
   }
+  const toggle = () => document.body.classList.toggle('open');
+  document.getElementById('menu').onclick = toggle;
+  document.getElementById('scrim').onclick = toggle;
 })();
 </script>
 </body>
