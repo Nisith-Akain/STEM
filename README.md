@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="assets/logo.svg" width="96" alt="STEM logo: a pixel chemistry flask with a sparkle">
+</p>
+
+<p align="center">
   <img src="banner.svg" alt="Animated pixel-art banner: the letters S T E M bobbing above a bubbling flask" width="640">
 </p>
 
@@ -22,6 +26,7 @@ Everything regarding science, engineering, maths and technology: notes, cheat sh
 STEM/
 ├── index.html        # GitHub Pages viewer (renders the markdown + LaTeX)
 ├── banner.svg        # the pixel animation above
+├── assets/logo.svg   # the pixel logo
 └── chemistry/        # notes by subject
 ```
 
